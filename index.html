@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yathra — Kerala Tourism Concierge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --jungle: #0d2b1a;
+  --forest: #1a4a2e;
+  --moss: #2d6a4f;
+  --leaf: #52b788;
+  --gold: #d4a843;
+  --amber: #f4c542;
+  --cream: #f9f4ec;
+  --sand: #e8dcc8;
+  --rust: #b5541a;
+  --water: #1a6b8a;
+  --sky: #2196a0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--cream);
+  color: var(--jungle);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.2s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.35s ease, width 0.3s, height 0.3s;
+  opacity: 0.5;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(13,43,26,0.95);
+  backdrop-filter: blur(12px);
+  padding: 14px 48px;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: 1px;
+}
+.nav-logo span { color: var(--gold); font-style: italic; }
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  color: rgba(249,244,236,0.7);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold);
+  color: var(--jungle) !important;
+  padding: 10px 24px;
+  border-radius: 40px;
+  font-weight: 600 !important;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--amber) !important; transform: scale(1.04) !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  background: var(--jungle);
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Animated background orbs */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  animation: float 8s ease-in-out infinite;
+}
+.orb1 { width: 600px; height: 600px; background: var(--moss); top: -100px; right: -100px; animation-delay: 0s; }
+.orb2 { width: 400px; height: 400px; background: var(--water); bottom: -50px; left: 20%; animation-delay: 3s; }
+.orb3 { width: 300px; height: 300px; background: var(--gold); top: 30%; left: -100px; animation-delay: 6s; opacity: 0.15; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+/* Diagonal decorative lines */
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.04;
+}
+.hero-lines::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 1px;
+  background: var(--gold);
+  top: 35%;
+  left: -50%;
+  transform: rotate(-15deg);
+  box-shadow: 0 60px 0 rgba(212,168,67,1), 0 120px 0 rgba(212,168,67,0.5);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding-top: 100px;
+}
+
+.hero-left {}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(212,168,67,0.1);
+  border: 1px solid rgba(212,168,67,0.2);
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 40px;
+  margin-bottom: 28px;
+  animation: fadeSlideUp 0.8s 0.2s both;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 7vw, 90px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.0;
+  animation: fadeSlideUp 0.8s 0.4s both;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+.hero-title strong {
+  font-weight: 600;
+  display: block;
+}
+
+.hero-desc {
+  color: rgba(249,244,236,0.55);
+  font-size: 16px;
+  line-height: 1.8;
+  margin-top: 24px;
+  max-width: 420px;
+  font-weight: 300;
+  animation: fadeSlideUp 0.8s 0.6s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 36px;
+  animation: fadeSlideUp 0.8s 0.8s both;
+}
+.btn-primary {
+  background: var(--gold);
+  color: var(--jungle);
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 8px 30px rgba(212,168,67,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); background: var(--amber); box-shadow: 0 12px 40px rgba(212,168,67,0.4); }
+.btn-ghost {
+  border: 1px solid rgba(249,244,236,0.2);
+  color: rgba(249,244,236,0.7);
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 52px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(249,244,236,0.08);
+  animation: fadeSlideUp 0.8s 1s both;
+}
+.hstat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.hstat-label {
+  font-size: 11px;
+  color: rgba(249,244,236,0.4);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* HERO RIGHT — App mockup card */
+.hero-right {
+  animation: fadeSlideUp 0.8s 0.5s both;
+}
+.mockup-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+.mockup-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(212,168,67,0.2), transparent, rgba(82,183,136,0.1));
+  z-index: -1;
+}
+.mockup-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.mockup-avatar {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--moss), var(--leaf));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.mockup-name { font-size: 14px; color: var(--cream); font-weight: 500; }
+.mockup-sub { font-size: 11px; color: rgba(249,244,236,0.4); }
+
+.chat-bubble {
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  max-width: 85%;
+  animation: fadeSlideUp 0.5s both;
+}
+.bubble-user {
+  background: rgba(212,168,67,0.12);
+  color: var(--gold);
+  border: 1px solid rgba(212,168,67,0.15);
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+  animation-delay: 1.2s;
+}
+.bubble-ai {
+  background: rgba(255,255,255,0.06);
+  color: rgba(249,244,236,0.85);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-bottom-left-radius: 4px;
+  animation-delay: 1.5s;
+}
+.bubble-ai2 { animation-delay: 1.8s; }
+
+.mockup-places {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+  animation: fadeSlideUp 0.5s 2.1s both;
+}
+.place-chip {
+  background: rgba(45,106,79,0.3);
+  border: 1px solid rgba(82,183,136,0.2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--leaf);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.place-chip span { font-size: 16px; }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SCROLL INDICATOR */
+.scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(249,244,236,0.3);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeSlideUp 0.8s 1.5s both;
+}
+.scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, rgba(212,168,67,0.6), transparent);
+  animation: scrollPulse 2s infinite;
+}
+@keyframes scrollPulse {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* MARQUEE */
+.marquee-section {
+  background: var(--forest);
+  padding: 18px 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(212,168,67,0.15);
+  border-bottom: 1px solid rgba(212,168,67,0.15);
+}
+.marquee-track {
+  display: flex;
+  gap: 48px;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  color: rgba(249,244,236,0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 300;
+  flex-shrink: 0;
+}
+.marquee-item::after {
+  content: '✦';
+  color: var(--gold);
+  font-size: 10px;
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* SECTION BASE */
+section { position: relative; }
+.section-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--jungle);
+}
+.section-heading em { font-style: italic; color: var(--moss); }
+
+/* FEATURES */
+.features {
+  padding: 120px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.features-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 64px;
+}
+.features-intro p {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-top: 16px;
+  font-weight: 300;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.feat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s, transform 0.6s, box-shadow 0.3s, border-color 0.3s;
+}
+.feat-card.visible { opacity: 1; transform: translateY(0); }
+.feat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(13,43,26,0.1); border-color: rgba(212,168,67,0.3); }
+.feat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold), var(--leaf));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+.feat-card:hover::before { transform: scaleX(1); }
+.feat-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.feat-icon.green { background: rgba(45,106,79,0.1); }
+.feat-icon.gold { background: rgba(212,168,67,0.1); }
+.feat-icon.blue { background: rgba(26,107,138,0.1); }
+.feat-icon.rust { background: rgba(181,84,26,0.1); }
+.feat-title { font-size: 17px; font-weight: 600; color: var(--jungle); margin-bottom: 10px; }
+.feat-desc { font-size: 13px; color: #777; line-height: 1.7; font-weight: 300; }
+.feat-badge {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 10px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.badge-mvp { background: #e8f5f0; color: var(--moss); }
+.badge-v2 { background: #fef3e0; color: var(--rust); }
+
+/* EXPERIENCE / HOW IT WORKS */
+.how-section {
+  background: var(--jungle);
+  padding: 120px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.how-section::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(45,106,79,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.how-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.how-section .section-heading { color: var(--cream); }
+.how-section .section-label { }
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: 64px;
+  position: relative;
+}
+.how-steps::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212,168,67,0.4), rgba(82,183,136,0.4), transparent);
+}
+.step {
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.step.visible { opacity: 1; transform: translateY(0); }
+.step-num {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin: 0 auto 20px;
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(212,168,67,0.2);
+}
+.step:nth-child(1) .step-num { background: rgba(45,106,79,0.3); }
+.step:nth-child(2) .step-num { background: rgba(212,168,67,0.2); }
+.step:nth-child(3) .step-num { background: rgba(26,107,138,0.3); }
+.step:nth-child(4) .step-num { background: rgba(181,84,26,0.2); }
+.step-title { font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 10px; }
+.step-desc { font-size: 13px; color: rgba(249,244,236,0.45); line-height: 1.7; font-weight: 300; }
+
+/* DESTINATIONS */
+.destinations {
+  padding: 120px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.dest-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 240px 240px;
+  gap: 16px;
+  margin-top: 52px;
+}
+.dest-card {
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  group: '';
+}
+.dest-card:first-child { grid-row: span 2; }
+.dest-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.5s ease;
+}
+.dest-card:hover .dest-bg { transform: scale(1.06); }
+.d1 { background: linear-gradient(135deg, #0a3d2e 0%, #1a6b4a 40%, #0d5c3a 100%); }
+.d2 { background: linear-gradient(135deg, #0a2d4d 0%, #1a5b8a 100%); }
+.d3 { background: linear-gradient(135deg, #3d2a0a 0%, #8a5b1a 100%); }
+.d4 { background: linear-gradient(135deg, #1a3d0a 0%, #5b8a1a 100%); }
+.d5 { background: linear-gradient(135deg, #0a3d3d 0%, #1a7a7a 100%); }
+
+/* Decorative patterns per card */
+.d1::after { content: '🌊'; position: absolute; right: 20px; top: 20px; font-size: 80px; opacity: 0.15; }
+.d2::after { content: '🏛️'; position: absolute; right: 10px; top: 10px; font-size: 50px; opacity: 0.2; }
+.d3::after { content: '☕'; position: absolute; right: 10px; top: 10px; font-size: 50px; opacity: 0.2; }
+.d4::after { content: '🐘'; position: absolute; right: 10px; top: 10px; font-size: 50px; opacity: 0.2; }
+.d5::after { content: '🐟'; position: absolute; right: 10px; top: 10px; font-size: 50px; opacity: 0.2; }
+
+.dest-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+}
+.dest-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+}
+.dest-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+}
+.dest-card:first-child .dest-name { font-size: 36px; }
+.dest-tag {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4px;
+}
+
+/* REVENUE */
+.revenue {
+  background: var(--cream);
+  padding: 120px 48px;
+  position: relative;
+}
+.revenue::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--sand), transparent);
+}
+.revenue-inner { max-width: 1200px; margin: 0 auto; }
+.revenue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 52px;
+}
+.rev-card {
+  background: white;
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid rgba(0,0,0,0.06);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s, box-shadow 0.3s;
+}
+.rev-card.visible { opacity: 1; transform: translateY(0); }
+.rev-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(13,43,26,0.08); }
+.rev-icon { font-size: 32px; margin-bottom: 14px; }
+.rev-model { font-size: 14px; font-weight: 600; color: var(--jungle); margin-bottom: 8px; }
+.rev-desc { font-size: 12px; color: #999; line-height: 1.6; }
+.rev-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  color: var(--moss);
+  margin-top: 16px;
+  font-weight: 300;
+}
+.rev-per { font-size: 10px; color: #bbb; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ROADMAP */
+.roadmap {
+  padding: 120px 48px;
+  background: var(--forest);
+  position: relative;
+  overflow: hidden;
+}
+.roadmap::after {
+  content: '';
+  position: absolute;
+  bottom: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(212,168,67,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.roadmap-inner { max-width: 1200px; margin: 0 auto; }
+.roadmap .section-heading { color: var(--cream); }
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+  position: relative;
+}
+.phases::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0;
+  width: 1px;
+  background: rgba(212,168,67,0.1);
+  display: none;
+}
+.phase-card {
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  padding: 28px;
+  background: rgba(255,255,255,0.03);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.phase-card.visible { opacity: 1; transform: translateX(0); }
+.phase-period {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.phase-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: var(--cream);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.phase-tasks { list-style: none; }
+.phase-tasks li {
+  font-size: 13px;
+  color: rgba(249,244,236,0.5);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 300;
+}
+.phase-tasks li::before { content: '→'; color: var(--leaf); font-size: 11px; flex-shrink: 0; }
+.phase-tasks li:last-child { border-bottom: none; }
+
+/* TECH */
+.tech {
+  padding: 120px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.tech-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-bottom: 52px;
+}
+.tech-intro p { font-size: 15px; color: #666; line-height: 1.8; margin-top: 16px; font-weight: 300; }
+.start-prompt {
+  background: var(--jungle);
+  border-radius: 16px;
+  padding: 28px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: var(--gold);
+  line-height: 2;
+  position: relative;
+  overflow: hidden;
+}
+.start-prompt::before {
+  content: '● ● ●';
+  position: absolute;
+  top: 12px; left: 16px;
+  font-size: 10px;
+  color: rgba(249,244,236,0.2);
+  letter-spacing: 4px;
+}
+.start-prompt .code-inner { margin-top: 24px; }
+.code-comment { color: rgba(249,244,236,0.25); }
+.tech-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.tech-card {
+  background: var(--jungle);
+  border-radius: 16px;
+  padding: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.tech-card.visible { opacity: 1; transform: translateY(0); }
+.tech-layer {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.tech-list { list-style: none; }
+.tech-list li {
+  font-size: 13px;
+  color: rgba(249,244,236,0.65);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 300;
+}
+.tech-list li:last-child { border-bottom: none; }
+.tech-list li::before { content: '→'; color: var(--leaf); font-size: 11px; }
+
+/* CTA */
+.cta-section {
+  background: linear-gradient(135deg, var(--jungle) 0%, #0a3d2e 50%, var(--forest) 100%);
+  padding: 120px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '🌴';
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 200px;
+  opacity: 0.04;
+}
+.cta-section::after {
+  content: '🌴';
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%) scaleX(-1);
+  font-size: 200px;
+  opacity: 0.04;
+}
+.cta-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.1;
+}
+.cta-title em { font-style: italic; color: var(--gold); }
+.cta-desc { color: rgba(249,244,236,0.5); font-size: 16px; margin-top: 16px; line-height: 1.7; font-weight: 300; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; margin-top: 40px; }
+
+/* FOOTER */
+footer {
+  background: #080f0b;
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: rgba(249,244,236,0.4);
+}
+.footer-logo span { color: var(--gold); font-style: italic; }
+.footer-text { font-size: 12px; color: rgba(249,244,236,0.2); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 12px; color: rgba(249,244,236,0.3); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .hero-content { grid-template-columns: 1fr; gap: 48px; padding: 0 24px; padding-top: 100px; }
+  .hero-right { display: none; }
+  .features { padding: 80px 24px; }
+  .features-top { grid-template-columns: 1fr; gap: 24px; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .how-section { padding: 80px 24px; }
+  .how-steps { grid-template-columns: 1fr 1fr; }
+  .how-steps::before { display: none; }
+  .destinations { padding: 80px 24px; }
+  .dest-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .dest-card:first-child { grid-row: span 1; }
+  .revenue { padding: 80px 24px; }
+  .revenue-grid { grid-template-columns: 1fr 1fr; }
+  .roadmap { padding: 80px 24px; }
+  .phases { grid-template-columns: 1fr 1fr; }
+  .tech { padding: 80px 24px; }
+  .tech-top { grid-template-columns: 1fr; gap: 32px; }
+  .tech-cards { grid-template-columns: 1fr 1fr; }
+  .cta-section { padding: 80px 24px; }
+  .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Yath<span>ra</span></div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#revenue">Revenue</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#cta" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+  <div class="hero-lines"></div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="eyebrow-dot"></span> Kerala's AI Travel Companion</div>
+      <h1 class="hero-title">
+        Discover<br>
+        <em>God's Own</em>
+        <strong>Country</strong>
+      </h1>
+      <p class="hero-desc">An AI-powered concierge that turns every tourist's Kerala dream into a perfectly crafted, deeply local journey — built by someone who calls it home.</p>
+      <div class="hero-actions">
+        <a href="#features" class="btn-primary">Explore the App</a>
+        <a href="#roadmap" class="btn-ghost">See Roadmap</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hstat-num">2.1Cr+</div>
+          <div class="hstat-label">Annual Tourists</div>
+        </div>
+        <div>
+          <div class="hstat-num">₹40K Cr</div>
+          <div class="hstat-label">Tourism Revenue</div>
+        </div>
+        <div>
+          <div class="hstat-num">0</div>
+          <div class="hstat-label">AI Concierge Apps</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="mockup-card">
+        <div class="mockup-header">
+          <div class="mockup-avatar">🌴</div>
+          <div>
+            <div class="mockup-name">Yathra AI</div>
+            <div class="mockup-sub">Your Kerala Guide · Online</div>
+          </div>
+        </div>
+
+        <div class="chat-bubble bubble-user">Best places near Alleppey for 3 days? Budget ₹5000/day 🙏</div>
+        <div class="chat-bubble bubble-ai">Namaskaram! Here's your perfect Alleppey itinerary — curated just for you 🌊</div>
+        <div class="chat-bubble bubble-ai bubble-ai2">Day 1: Houseboat on Vembanad Lake → Kumarakom Bird Sanctuary sunset. Day 2: Krishnapuram Palace + Alappuzha Beach…</div>
+
+        <div class="mockup-places">
+          <div class="place-chip"><span>🛶</span> Houseboat Stay</div>
+          <div class="place-chip"><span>🦜</span> Bird Sanctuary</div>
+          <div class="place-chip"><span>🍛</span> Kuttanad Cuisine</div>
+          <div class="place-chip"><span>🌅</span> Beach Sunset</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Alleppey Backwaters</div>
+    <div class="marquee-item">Munnar Tea Gardens</div>
+    <div class="marquee-item">Kovalam Beach</div>
+    <div class="marquee-item">Wayanad Forests</div>
+    <div class="marquee-item">Fort Kochi Heritage</div>
+    <div class="marquee-item">Thekkady Wildlife</div>
+    <div class="marquee-item">Thrissur Pooram</div>
+    <div class="marquee-item">Calicut Malabar Cuisine</div>
+    <div class="marquee-item">Kathakali Dance</div>
+    <div class="marquee-item">Ayurveda Retreats</div>
+    <div class="marquee-item">Alleppey Backwaters</div>
+    <div class="marquee-item">Munnar Tea Gardens</div>
+    <div class="marquee-item">Kovalam Beach</div>
+    <div class="marquee-item">Wayanad Forests</div>
+    <div class="marquee-item">Fort Kochi Heritage</div>
+    <div class="marquee-item">Thekkady Wildlife</div>
+    <div class="marquee-item">Thrissur Pooram</div>
+    <div class="marquee-item">Calicut Malabar Cuisine</div>
+    <div class="marquee-item">Kathakali Dance</div>
+    <div class="marquee-item">Ayurveda Retreats</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="features">
+    <div class="features-top">
+      <div>
+        <div class="section-label">Core Features</div>
+        <h2 class="section-heading">Everything a tourist<br><em>truly needs</em></h2>
+      </div>
+      <div class="features-intro">
+        <p>From AI-generated itineraries to real-time local recommendations — Yathra is the only Kerala travel companion that understands the culture from the inside.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon green">🗺️</div>
+        <div class="feat-title">AI Itinerary Builder</div>
+        <div class="feat-desc">Enter your interests, budget, and days — get a personalized Kerala route with timings, transport tips, and insider stops no guidebook lists.</div>
+        <span class="feat-badge badge-mvp">MVP</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">🏡</div>
+        <div class="feat-title">Homestay Discovery</div>
+        <div class="feat-desc">Curated authentic Kerala homestays with verified reviews and direct booking — not just generic hotel aggregator results.</div>
+        <span class="feat-badge badge-mvp">MVP</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon blue">🤖</div>
+        <div class="feat-title">24/7 AI Chat Guide</div>
+        <div class="feat-desc">"Is Munnar accessible in July?" "Best fish curry in Kozhikode?" Instant local answers, powered by Claude AI, available anywhere.</div>
+        <span class="feat-badge badge-mvp">MVP</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon rust">🍛</div>
+        <div class="feat-title">Hyperlocal Food Guide</div>
+        <div class="feat-desc">Beyond Google Maps — real street food, toddy shops, banana leaf meals, and hidden Malabar coastal spots locals actually eat at.</div>
+        <span class="feat-badge badge-mvp">MVP</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">🎭</div>
+        <div class="feat-title">Festival Tracker</div>
+        <div class="feat-desc">Onam, Thrissur Pooram, Nehru Trophy Boat Race — never miss a cultural moment. Real-time events calendar synced to your travel dates.</div>
+        <span class="feat-badge badge-v2">V2</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">🛵</div>
+        <div class="feat-title">Experience Booking</div>
+        <div class="feat-desc">Houseboat rides, spice farm tours, Kathakali shows, Ayurveda sessions — book verified local operators directly through the app.</div>
+        <span class="feat-badge badge-v2">V2</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-section">
+    <div class="how-inner">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-heading" style="color:var(--cream)">From question to <em style="color:var(--gold)">journey</em><br>in seconds</h2>
+      <div class="how-steps">
+        <div class="step">
+          <div class="step-num">🙋</div>
+          <div class="step-title">Tell Us About You</div>
+          <div class="step-desc">Share your interests, travel dates, budget, and travel style. Family trip? Solo backpacker? Luxury retreat?</div>
+        </div>
+        <div class="step">
+          <div class="step-num">🤖</div>
+          <div class="step-title">AI Crafts Your Plan</div>
+          <div class="step-desc">Yathra's Claude-powered AI generates a day-by-day Kerala itinerary tailored precisely to your preferences.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">📍</div>
+          <div class="step-title">Discover & Book</div>
+          <div class="step-desc">Browse curated homestays, restaurants, and experiences. Book directly with verified local operators.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">🌴</div>
+          <div class="step-title">Travel Confidently</div>
+          <div class="step-desc">Your AI guide is with you 24/7 — answering questions, rerouting plans, and surfacing local gems on the go.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section id="destinations">
+  <div class="destinations">
+    <div class="section-label">Featured Destinations</div>
+    <h2 class="section-heading">Kerala's most <em>iconic</em> places</h2>
+    <div class="dest-grid">
+      <div class="dest-card">
+        <div class="dest-bg d1"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-info">
+          <div class="dest-name">Alleppey</div>
+          <div class="dest-tag">Backwaters · Houseboats · Sunsets</div>
+        </div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-bg d2"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-info">
+          <div class="dest-name">Fort Kochi</div>
+          <div class="dest-tag">Heritage · Culture · Art</div>
+        </div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-bg d3"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-info">
+          <div class="dest-name">Munnar</div>
+          <div class="dest-tag">Tea Gardens · Mist · Hills</div>
+        </div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-bg d4"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-info">
+          <div class="dest-name">Wayanad</div>
+          <div class="dest-tag">Wildlife · Forests · Tribal</div>
+        </div>
+      </div>
+      <div class="dest-card">
+        <div class="dest-bg d5"></div>
+        <div class="dest-overlay"></div>
+        <div class="dest-info">
+          <div class="dest-name">Kozhikode</div>
+          <div class="dest-tag">Malabar Cuisine · Beaches</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE -->
+<section id="revenue">
+  <div class="revenue">
+    <div class="revenue-inner">
+      <div class="section-label">Business Model</div>
+      <h2 class="section-heading">Four ways to <em>earn</em></h2>
+      <div class="revenue-grid">
+        <div class="rev-card">
+          <div class="rev-icon">🏨</div>
+          <div class="rev-model">Hotel Commission</div>
+          <div class="rev-desc">Earn 8–15% on every homestay or hotel booking made through Yathra</div>
+          <div class="rev-amount">₹500–2K</div>
+          <div class="rev-per">per booking</div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-icon">⭐</div>
+          <div class="rev-model">Featured Listings</div>
+          <div class="rev-desc">Local restaurants and operators pay monthly to be prominently featured</div>
+          <div class="rev-amount">₹999–5K</div>
+          <div class="rev-per">per month</div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-icon">🎟️</div>
+          <div class="rev-model">Experience Cuts</div>
+          <div class="rev-desc">10–20% commission on houseboat rides, tours, and cultural experiences</div>
+          <div class="rev-amount">₹200–1.5K</div>
+          <div class="rev-per">per booking</div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-icon">👑</div>
+          <div class="rev-model">Premium Plan</div>
+          <div class="rev-desc">Offline access, unlimited AI itineraries, and priority support for tourists</div>
+          <div class="rev-amount">₹299</div>
+          <div class="rev-per">per trip</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="roadmap">
+    <div class="roadmap-inner">
+      <div class="section-label">Build Roadmap</div>
+      <h2 class="section-heading">From idea to <em style="color:var(--gold)">₹1L revenue</em><br>in 6 months</h2>
+      <div class="phases">
+        <div class="phase-card">
+          <div class="phase-period">Month 1–2</div>
+          <div class="phase-name">Foundation</div>
+          <ul class="phase-tasks">
+            <li>Market research & competitor analysis</li>
+            <li>UI/UX wireframes & design</li>
+            <li>Claude API integration</li>
+            <li>Basic itinerary builder</li>
+            <li>Partner 10 homestays</li>
+          </ul>
+        </div>
+        <div class="phase-card">
+          <div class="phase-period">Month 3</div>
+          <div class="phase-name">MVP Launch</div>
+          <ul class="phase-tasks">
+            <li>App live on Play Store</li>
+            <li>AI chat feature live</li>
+            <li>Soft launch in Kochi</li>
+            <li>First 500 users</li>
+            <li>Collect feedback</li>
+          </ul>
+        </div>
+        <div class="phase-card">
+          <div class="phase-period">Month 4–5</div>
+          <div class="phase-name">Growth</div>
+          <ul class="phase-tasks">
+            <li>Social media marketing push</li>
+            <li>100+ business listings</li>
+            <li>Festival tracker feature</li>
+            <li>First ₹1L revenue</li>
+            <li>User retention loop</li>
+          </ul>
+        </div>
+        <div class="phase-card">
+          <div class="phase-period">Month 6+</div>
+          <div class="phase-name">Scale</div>
+          <ul class="phase-tasks">
+            <li>iOS App launch</li>
+            <li>Experience booking system</li>
+            <li>Gulf diaspora targeting</li>
+            <li>Investor pitch ready</li>
+            <li>Expand to other states</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech">
+  <div class="tech">
+    <div class="tech-top">
+      <div class="tech-intro">
+        <div class="section-label">Tech Stack</div>
+        <h2 class="section-heading">Built to <em>scale fast</em></h2>
+        <p>A lean, modern stack chosen for speed of development and production reliability. Start with Claude Code and have your first feature running in hours.</p>
+      </div>
+      <div class="start-prompt">
+        <div class="code-inner">
+          <span class="code-comment"># Start building now</span><br>
+          mkdir yathra && cd yathra<br>
+          claude<br><br>
+          <span class="code-comment"># Tell Claude Code:</span><br>
+          "Build a React Native app for<br>
+          Kerala tourism. Start with an AI<br>
+          itinerary generator using Claude<br>
+          API — form inputs: destination,<br>
+          days, interests, budget."
+        </div>
+      </div>
+    </div>
+    <div class="tech-cards">
+      <div class="tech-card">
+        <div class="tech-layer">Frontend</div>
+        <ul class="tech-list">
+          <li>React Native</li>
+          <li>Expo Framework</li>
+          <li>NativeWind/Tailwind</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <div class="tech-layer">Backend</div>
+        <ul class="tech-list">
+          <li>Node.js + Express</li>
+          <li>Supabase Database</li>
+          <li>Firebase Auth</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <div class="tech-layer">AI Layer</div>
+        <ul class="tech-list">
+          <li>Claude API</li>
+          <li>Google Maps API</li>
+          <li>OpenWeather API</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <div class="tech-layer">Payments</div>
+        <ul class="tech-list">
+          <li>Razorpay</li>
+          <li>Google AdMob</li>
+          <li>Affiliate APIs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-section">
+    <div class="cta-inner">
+      <div class="section-label">Ready to Build?</div>
+      <h2 class="cta-title">Your Kerala<br><em>advantage</em> is real</h2>
+      <p class="cta-desc">You know the hidden beaches, the real homestays, the right season to visit Munnar. No outsider can build this app the way you can. Start today with Claude Code.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn-primary">Start Building with Claude Code</a>
+        <a href="#features" class="btn-ghost">Review the Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="nav-logo footer-logo">Yath<span>ra</span></div>
+  <div class="footer-text">© 2025 Yathra · Kerala Tourism Concierge · Built with Claude Code</div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#tech">Tech Stack</a>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '52px';
+    ring.style.height = '52px';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px';
+    ring.style.height = '36px';
+  });
+});
+
+// Scroll nav
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feat-card, .step, .rev-card, .phase-card, .tech-card').forEach(el => {
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
